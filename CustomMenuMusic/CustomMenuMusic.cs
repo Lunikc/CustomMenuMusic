@@ -30,12 +30,12 @@ namespace DespacitoPlugin
 
         private string[] GetAllSongsPath()
         {
-            if (!Directory.Exists("UserData"))
+            if (!Directory.Exists("CustomMenuMusics"))
             {
-                Directory.CreateDirectory("UserData");
+                Directory.CreateDirectory("CustomMenuMusics");
             }
 
-            string[] filePaths = Directory.GetFiles("UserData", "*.ogg");
+            string[] filePaths = Directory.GetFiles("CustomMenuMusics", "*.ogg");
 
             return filePaths;
         }
