@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustemMenuMusic", "DespacitoPlugin\CustemMenuMusic.csproj", "{5DB19C7E-008B-4EB4-96CD-7ABD84679FD9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustemMenuMusic", "CustomMenuMusic\CustemMenuMusic.csproj", "{5DB19C7E-008B-4EB4-96CD-7ABD84679FD9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,6 +20,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {0519B6E2-A541-4643-846A-558604D30310}
+		SolutionGuid = {55C8A48B-D4A9-47A6-BFBD-930F3C9A0134}
 	EndGlobalSection
 EndGlobal
