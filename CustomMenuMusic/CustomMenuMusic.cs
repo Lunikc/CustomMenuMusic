@@ -27,6 +27,7 @@ namespace DespacitoPlugin
             {
                 instance = new GameObject("CustomMenuMusic").AddComponent<CustomMenuMusic>();
             }
+
         }
 
         public void Awake()
@@ -44,15 +45,13 @@ namespace DespacitoPlugin
             if (arg0.name == "Menu")
             {
                 _previewPlayer = Resources.FindObjectsOfTypeAll<SongPreviewPlayer>().First();
+                StartCoroutine(LoadAudioClip());
             }
-            StartCoroutine(LoadAudioClip());
-
         }
 
-        // Token: 0x06000004 RID: 4 RVA: 0x00002082 File Offset: 0x00000282
-        private void SceneManagerOnActiveSceneChanged(Scene arg0, Scene arg1)
+        private void printToLog(string str)
         {
-            StartCoroutine(LoadAudioClip());
+            Console.WriteLine("[CustomMenuMusic] " + str);
         }
 
         private void GetSongsList()
@@ -66,7 +65,8 @@ namespace DespacitoPlugin
                 filepaths = GetAllCustomMenuSongs();
             }
 
-            Console.WriteLine("[CustomMenuMusic]" + "found " + filepaths.Length + " songs");
+            printToLog("Found " + filepaths.Length + " songs");
+            
         }
 
 
@@ -132,7 +132,7 @@ namespace DespacitoPlugin
 
             GetNewSong();
 
-            Console.WriteLine("[CustomMenuMusic] Loading file @ " + musicPath);
+            printToLog("Loading file @ " + musicPath);
             WWW data = new WWW(Environment.CurrentDirectory + "\\" + musicPath);
             yield return data;
             try
@@ -144,18 +144,18 @@ namespace DespacitoPlugin
                 }
                 else
                 {
-                    Console.WriteLine("[CustomMenuMusic] No audio found!");
+                    printToLog("No audio found!");
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine("[CustomMenuMusic] Can't load audio! Exception: " + e);
+                printToLog("Can't load audio! Exception: " + e);
             }
              
 
             if (_previewPlayer != null && _menuMusic != null)
             {
-                Console.WriteLine("[CustomMenuMusic] Applying custom menu music...");
+                printToLog("Applying custom menu music...");
                 _previewPlayer.SetPrivateField("_defaultAudioClip", _menuMusic);
                 _previewPlayer.CrossfadeToDefault();
                 
