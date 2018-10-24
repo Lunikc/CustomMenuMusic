@@ -6,7 +6,7 @@ Now you can use either a randomly selected song from all downloaded maps, or use
 ### Configuration
 To use songs from the `BeatSaber/CustomMenuSongs` folder, simply go into `Beat Saber\modprefs.ini` and change `UserPrefSongs` to `1`. 
 
-Thanks to **[andruzzzhka](/author/andruzzzhka)** for his base code.
+Thanks to **andruzzzhka** for his base code.
 
 #### Versions :
 - **v1.1.0** : *Changed the folder from UserData to CustomMenuSongs (Thanks to BeigeAnimal for the suggestion)*
