@@ -1,8 +1,7 @@
 # CustomMenuMusic
 
 ## Custom Menu Music v1.1.0
-Changes the music in the menu.
-Now you can use either a randomly selected song from all downloaded maps, or use multiple songs selected at random from the `BeatSaber/CustomMenuSongs` folder.
+Changes the music in the menu, now you can use either a randomly selected song from all downloaded maps, or use multiple songs selected at random from the `BeatSaber/CustomMenuSongs` folder.
 
 ### Configuration
 To use songs from the `BeatSaber/CustomMenuSongs` folder, simply go into `Beat Saber\modprefs.ini` and change `UserPrefSongs` to `1`. 
