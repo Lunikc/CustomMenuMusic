@@ -16,7 +16,7 @@ namespace CustomMenuMusic
         public static CustomMenuMusic instance;
 
         AudioClip _menuMusic;
-        SongPreviewPlayer _previewPlayer;
+        SongPreviewPlayer _previewPlayer = new SongPreviewPlayer();
         string musicPath;
         string optionName = "UseCustomMenuSongs";
         string[] filepaths = new string[0];
@@ -44,8 +44,11 @@ namespace CustomMenuMusic
         {
             if (arg0.name == "Menu")
             {
-                _previewPlayer = Resources.FindObjectsOfTypeAll<SongPreviewPlayer>().First();
-                StartCoroutine(LoadAudioClip());
+                if (!_previewPlayer == Resources.FindObjectsOfTypeAll<SongPreviewPlayer>().First())
+                {
+                    _previewPlayer = Resources.FindObjectsOfTypeAll<SongPreviewPlayer>().First();
+                    StartCoroutine(LoadAudioClip());
+                }
             }
         }
 
