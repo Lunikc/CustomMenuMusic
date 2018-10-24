@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace DespacitoPlugin
+namespace CustomMenuMusic
 {
     public static class ReflectionUtil
     {

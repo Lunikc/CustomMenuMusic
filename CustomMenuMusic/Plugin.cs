@@ -1,7 +1,7 @@
 ﻿using IllusionPlugin;
 using UnityEngine.SceneManagement;
 
-namespace DespacitoPlugin
+namespace CustomMenuMusic
 {
     public class Plugin : IPlugin
     {

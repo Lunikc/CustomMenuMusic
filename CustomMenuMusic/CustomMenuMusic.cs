@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace DespacitoPlugin
+namespace CustomMenuMusic
 {
     class CustomMenuMusic : MonoBehaviour
     {
