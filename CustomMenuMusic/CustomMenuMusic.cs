@@ -18,6 +18,7 @@ namespace DespacitoPlugin
         AudioClip _menuMusic;
         SongPreviewPlayer _previewPlayer;
         string musicPath;
+        string optionName = "UseCustomMenuSongs";
         string[] filepaths = new string[0];
 
         public static void OnLoad()
@@ -28,7 +29,53 @@ namespace DespacitoPlugin
             }
         }
 
-        private string[] GetAllSongsPath()
+        public void Awake()
+        {
+            DontDestroyOnLoad(this);
+
+            SceneManager.sceneLoaded += sceneLoaded;
+
+            GetSongsList();
+        }
+
+
+        private void sceneLoaded(Scene arg0, LoadSceneMode arg1)
+        {
+            if (arg0.name == "Menu")
+            {
+                _previewPlayer = Resources.FindObjectsOfTypeAll<SongPreviewPlayer>().First();
+            }
+            StartCoroutine(LoadAudioClip());
+
+        }
+
+        // Token: 0x06000004 RID: 4 RVA: 0x00002082 File Offset: 0x00000282
+        private void SceneManagerOnActiveSceneChanged(Scene arg0, Scene arg1)
+        {
+            StartCoroutine(LoadAudioClip());
+        }
+
+        private void GetSongsList()
+        {
+            if (CheckOptions())
+            {
+                filepaths = GetAllCustomSongsPath();
+            }
+            else
+            {
+                filepaths = GetAllCustomMenuSongs();
+            }
+
+            Console.WriteLine("[CustomMenuMusic]" + "found " + filepaths.Length + " songs");
+        }
+
+
+        private bool CheckOptions()
+        {
+            return IllusionPlugin.ModPrefs.GetBool("CustomMenuMusic", optionName, false, true); ;
+        }
+
+        private string[] GetAllCustomSongsPath()
         {
             if (!Directory.Exists("CustomMenuSongs"))
             {
@@ -40,12 +87,8 @@ namespace DespacitoPlugin
             return filePaths;
         }
 
-        private bool CheckOptions()
-        {
-            return IllusionPlugin.ModPrefs.GetBool("CustomMenuMusic", "UserPrefSongs", false, true); ;
-        }
-
-        private string[] GetAllCustomSongs()
+        
+        private string[] GetAllCustomMenuSongs()
         {
             string[] filePaths = DirSearch("CustomSongs").ToArray();
 
@@ -76,57 +119,14 @@ namespace DespacitoPlugin
             return files;
         }
 
-        public void Awake()
-        {
-            DontDestroyOnLoad(this);
-                        
-            SceneManager.sceneLoaded += sceneLoaded;
-
-        }
-
-
-        // Token: 0x06000004 RID: 4 RVA: 0x00002082 File Offset: 0x00000282
-        private void SceneManagerOnActiveSceneChanged(Scene arg0, Scene arg1)
-        {
-
-            StartCoroutine(LoadAudioClip());
-
-        }
-
-        private void sceneLoaded(Scene arg0, LoadSceneMode arg1)
-        {
-            if (arg0.name == "Menu")
-            {
-                _previewPlayer = Resources.FindObjectsOfTypeAll<SongPreviewPlayer>().First();
-            }
-            StartCoroutine(LoadAudioClip());
-
-        }
-        private void GetSongsList()
-        {
-            if (CheckOptions())
-            {
-                filepaths = GetAllSongsPath();
-            }
-            else
-            {
-                filepaths = GetAllCustomSongs();
-            }
-
-            Console.WriteLine("[CustomMenuMusic]" + "found " + filepaths.Length + " songs");
-
-        }
 
         private void GetNewSong()
-        {
-            if (filepaths.Length == 0)
-                GetSongsList();
-
+        {           
             var a = UnityEngine.Random.Range(0, filepaths.Length);
             musicPath = filepaths[a];
-
         }
       
+
         IEnumerator LoadAudioClip()
         {
 
