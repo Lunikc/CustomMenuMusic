@@ -19,7 +19,7 @@ namespace CustomMenuMusic
         SongPreviewPlayer _previewPlayer = new SongPreviewPlayer();
         string musicPath;
         string optionName = "UseCustomMenuSongs";
-        string[] filepaths = new string[0];
+        string[] AllSongsfilepaths = new string[0];
 
         public static void OnLoad()
         {
@@ -35,6 +35,11 @@ namespace CustomMenuMusic
             DontDestroyOnLoad(this);
 
             SceneManager.sceneLoaded += sceneLoaded;
+
+            if (!Directory.Exists("CustomMenuSongs"))
+            {
+                Directory.CreateDirectory("CustomMenuSongs");
+            }
 
             GetSongsList();
         }
@@ -61,24 +66,25 @@ namespace CustomMenuMusic
         {
             if (CheckOptions())
             {
-                filepaths = GetAllCustomSongsPath();
+                AllSongsfilepaths = GetAllCustomMenuSongs();
             }
             else
             {
-                filepaths = GetAllCustomMenuSongs();
+                AllSongsfilepaths = GetAllCustomSongs();
             }
 
-            printToLog("Found " + filepaths.Length + " songs");
-            
+            printToLog("Found " + AllSongsfilepaths.Length + " custom menu songs");
+
+          
         }
 
 
         private bool CheckOptions()
         {
-            return IllusionPlugin.ModPrefs.GetBool("CustomMenuMusic", optionName, false, true); ;
+            return IllusionPlugin.ModPrefs.GetBool("CustomMenuMusic", optionName, true, true); ;
         }
 
-        private string[] GetAllCustomSongsPath()
+        private string[] GetAllCustomMenuSongs()
         {
             if (!Directory.Exists("CustomMenuSongs"))
             {
@@ -87,11 +93,18 @@ namespace CustomMenuMusic
 
             string[] filePaths = Directory.GetFiles("CustomMenuSongs", "*.ogg");
 
+            printToLog("CustomMenuSongs files found " + filePaths.Length);
+
+            if (filePaths.Length == 0)
+            {
+                filePaths = GetAllCustomSongs();
+            }
+
             return filePaths;
         }
 
         
-        private string[] GetAllCustomMenuSongs()
+        private string[] GetAllCustomSongs()
         {
             string[] filePaths = DirSearch("CustomSongs").ToArray();
 
@@ -125,8 +138,8 @@ namespace CustomMenuMusic
 
         private void GetNewSong()
         {           
-            var a = UnityEngine.Random.Range(0, filepaths.Length);
-            musicPath = filepaths[a];
+            var a = UnityEngine.Random.Range(0, AllSongsfilepaths.Length);
+            musicPath = AllSongsfilepaths[a];
         }
       
 
