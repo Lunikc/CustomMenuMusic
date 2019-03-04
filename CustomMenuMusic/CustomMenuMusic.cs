@@ -138,7 +138,7 @@ namespace CustomMenuMusic
 
         private void GetNewSong()
         {
-            UnityEngine.Random.InitState(Environment.TickCount);        
+            UnityEngine.Random.InitState(Environment.TickCount);
             var a = UnityEngine.Random.Range(0, AllSongsfilepaths.Length);
             musicPath = AllSongsfilepaths[a];
         }
