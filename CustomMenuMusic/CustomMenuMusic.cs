@@ -50,7 +50,6 @@ namespace CustomMenuMusic
 
         public void SceneManager_activeSceneChanged(Scene arg0, Scene arg1)
         {
-            printToLog(arg1.name);
             if (arg1.name == "MenuCore")
             {
                 if (!_previewPlayer == Resources.FindObjectsOfTypeAll<SongPreviewPlayer>().First())
@@ -71,13 +70,15 @@ namespace CustomMenuMusic
             if (CheckOptions())
             {
                 AllSongsfilepaths = GetAllCustomMenuSongs();
+                if (AllSongsfilepaths.Length == 0)
+                    AllSongsfilepaths = GetAllCustomSongs();
             }
             else
             {
                 AllSongsfilepaths = GetAllCustomSongs();
             }
 
-            printToLog("Found " + AllSongsfilepaths.Length + " custom menu songs");
+            printToLog("Found " + AllSongsfilepaths.Length + " songs.");
 
             ShuffleSongs();
           
