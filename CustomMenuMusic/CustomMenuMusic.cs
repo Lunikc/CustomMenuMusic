@@ -17,6 +17,7 @@ namespace CustomMenuMusic
 
         AudioClip _menuMusic;
         SongPreviewPlayer _previewPlayer = new SongPreviewPlayer();
+        int CurrentSong;
         string musicPath;
         string optionName = "UseCustomMenuSongs";
         string[] AllSongsfilepaths = new string[0];
@@ -34,35 +35,38 @@ namespace CustomMenuMusic
         {
             DontDestroyOnLoad(this);
 
-            SceneManager.sceneLoaded += sceneLoaded;
+            //SceneManager.sceneLoaded += sceneLoaded;
+            SceneManager.activeSceneChanged += new UnityEngine.Events.UnityAction<Scene, Scene>(this.SceneManager_activeSceneChanged);
 
             if (!Directory.Exists("CustomMenuSongs"))
             {
                 Directory.CreateDirectory("CustomMenuSongs");
             }
 
+            UnityEngine.Random.InitState(System.Environment.TickCount);
             GetSongsList();
+            
         }
 
-
-        private void sceneLoaded(Scene arg0, LoadSceneMode arg1)
+        public void SceneManager_activeSceneChanged(Scene arg0, Scene arg1)
         {
-            if (arg0.name == "Menu")
+            printToLog(arg1.name);
+            if (arg1.name == "MenuCore")
             {
                 if (!_previewPlayer == Resources.FindObjectsOfTypeAll<SongPreviewPlayer>().First())
                 {
                     _previewPlayer = Resources.FindObjectsOfTypeAll<SongPreviewPlayer>().First();
-                    StartCoroutine(LoadAudioClip());
+                    GetNewSong();
                 }
             }
         }
 
-        private void printToLog(string str)
+        private void printToLog(string str)  //Prints a string to the log. Quite explicit
         {
-            Console.WriteLine("[CustomMenuMusic] " + str);
-        }
+            Console.WriteLine("[CustomMenuMusic] :" + str);
+        }  
 
-        private void GetSongsList()
+        private void GetSongsList() // Initializes the song list
         {
             if (CheckOptions())
             {
@@ -75,16 +79,16 @@ namespace CustomMenuMusic
 
             printToLog("Found " + AllSongsfilepaths.Length + " custom menu songs");
 
+            ShuffleSongs();
           
         }
 
-
-        private bool CheckOptions()
+        private bool CheckOptions()  //Checks ModPrefs for user options
         {
             return IllusionPlugin.ModPrefs.GetBool("CustomMenuMusic", optionName, true, true); ;
         }
 
-        private string[] GetAllCustomMenuSongs()
+        private string[] GetAllCustomMenuSongs()  //Get .ogg in CustomMenuSongs directory
         {
             if (!Directory.Exists("CustomMenuSongs"))
             {
@@ -102,17 +106,15 @@ namespace CustomMenuMusic
 
             return filePaths;
         }
-
-        
-        private string[] GetAllCustomSongs()
+  
+        private string[] GetAllCustomSongs()  //Get .ogg in CustomSongs directory
         {
             string[] filePaths = DirSearch("CustomSongs").ToArray();
 
             return filePaths;
         }
 
-
-        private List<String> DirSearch(string sDir)
+        private List<String> DirSearch(string sDir)  //Search Directories for .ogg with depth of 2
         {
             List<String> files = new List<String>();
             try
@@ -135,19 +137,27 @@ namespace CustomMenuMusic
             return files;
         }
 
-
-        private void GetNewSong()
+        private void GetNewSong() // Gets the first song when loading the menu
         {
-            UnityEngine.Random.InitState(Environment.TickCount);
-            var a = UnityEngine.Random.Range(0, AllSongsfilepaths.Length);
-            musicPath = AllSongsfilepaths[a];
+            ShuffleSongs();
+            CurrentSong = 0;
+            musicPath = AllSongsfilepaths[CurrentSong];
+            StartCoroutine(LoadAudioClip());
         }
-      
 
-        IEnumerator LoadAudioClip()
+        private void ShuffleSongs() // Shuffle the songs list for... uhh... randomized fun?
         {
+            for (int i = 0; i < AllSongsfilepaths.Length; i++)
+            {
+                string temp = AllSongsfilepaths[i];
+                int randomIndex = UnityEngine.Random.Range(i, AllSongsfilepaths.Length);
+                AllSongsfilepaths[i] = AllSongsfilepaths[randomIndex];
+                AllSongsfilepaths[randomIndex] = temp;
+            }
+        }
 
-            GetNewSong();
+        IEnumerator LoadAudioClip()  //Load the song into the preview player
+        {
 
             printToLog("Loading file @ " + musicPath);
             WWW data = new WWW(Environment.CurrentDirectory + "\\" + musicPath);
@@ -178,5 +188,6 @@ namespace CustomMenuMusic
                 
             }
         }
+
     }
 }
