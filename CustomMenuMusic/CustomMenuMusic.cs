@@ -29,10 +29,9 @@ namespace CustomMenuMusic
             {
                 instance = new GameObject("CustomMenuMusic").AddComponent<CustomMenuMusic>();
             }
-
         }
 
-        public void Awake()
+        public void Awake() // Get songs list on awake
         {
             DontDestroyOnLoad(this);
 
@@ -48,7 +47,7 @@ namespace CustomMenuMusic
             
         }
 
-        public void SceneManager_activeSceneChanged(Scene arg0, Scene arg1)
+        public void SceneManager_activeSceneChanged(Scene arg0, Scene arg1) // On menu openned, load the song
         {
             if (arg1.name == "MenuCore")
             {
@@ -75,8 +74,8 @@ namespace CustomMenuMusic
 
             Logger.Log("Found " + AllSongsfilepaths.Length + " songs.");
 
-            ShuffleSongs();
-          
+            if (AllSongsfilepaths.Length == 0); // Add despacito here if you dare
+
         }
 
         private bool CheckOptions()  //Checks ModPrefs for user options
@@ -152,11 +151,35 @@ namespace CustomMenuMusic
             }
         }
 
+        private void ChangeCurrentSongIndex(int value) // Increment or decrement the CurrentSong value
+        {
+            CurrentSong += value;
+            if (CurrentSong < 0)
+                CurrentSong = AllSongsfilepaths.Length - 1;
+            else if (CurrentSong > AllSongsfilepaths.Length - 1)
+                CurrentSong = 0;
+        }
+
+        private void PlayNextSong() // Plays the next song in the list
+        {
+            ChangeCurrentSongIndex(1);
+            musicPath = AllSongsfilepaths[CurrentSong];
+            StartCoroutine(LoadAudioClip());
+        }
+
+        private void PlayPreviousSong() // Plays the previous song in the list
+        {
+            ChangeCurrentSongIndex(-1);
+            musicPath = AllSongsfilepaths[CurrentSong];
+            StartCoroutine(LoadAudioClip());
+        }
+
         IEnumerator LoadAudioClip()  //Load the song into the preview player
         {
-
+            
             Logger.Log("Loading file @ " + musicPath);
             WWW data = new WWW(Environment.CurrentDirectory + "\\" + musicPath);
+            
             yield return data;
             try
             {
@@ -178,7 +201,7 @@ namespace CustomMenuMusic
 
             if (_previewPlayer != null && _menuMusic != null)
             {
-                Logger.Log("Applying custom menu music...");
+                Logger.Log("Starting custom menu music...");
                 _previewPlayer.SetPrivateField("_defaultAudioClip", _menuMusic);
                 _previewPlayer.CrossfadeToDefault();
                 
