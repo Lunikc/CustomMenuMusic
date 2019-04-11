@@ -47,7 +47,7 @@ namespace CustomMenuMusic
             
         }
 
-        public void SceneManager_activeSceneChanged(Scene arg0, Scene arg1) // On menu openned, load the song
+        public void SceneManager_activeSceneChanged(Scene arg0, Scene arg1) // On menu opened, load the song
         {
             if (arg1.name == "MenuCore")
             {
@@ -176,23 +176,21 @@ namespace CustomMenuMusic
 
         IEnumerator LoadAudioClip()  //Load the song into the preview player
         {
-            
             Logger.Log("Loading file @ " + musicPath);
-            WWW data = new WWW(Environment.CurrentDirectory + "\\" + musicPath);
-            UnityWebRequest song = UnityWebRequestMultimedia.GetAudioClip(&"{Environment.CurrentDirectory}\\{musicPath}", AudioType.OGGVORBIS);
-            
-            yield return data;
+
+            UnityWebRequest song = UnityWebRequestMultimedia.GetAudioClip($"{Environment.CurrentDirectory}\\{musicPath}", AudioType.OGGVORBIS);
+
+            yield return song;
             try
             {
-                _menuMusic = data.GetAudioClipCompressed(false, AudioType.OGGVORBIS) as AudioClip;
+                _menuMusic = DownloadHandlerAudioClip.GetContent(song);
+
                 if (_menuMusic != null)
-                {
                     _menuMusic.name = Path.GetFileName(musicPath);
-                }
+                
                 else
-                {
                     Logger.Log("No audio found!");
-                }
+
             }
             catch (Exception e)
             {
@@ -205,9 +203,7 @@ namespace CustomMenuMusic
                 Logger.Log("Starting custom menu music...");
                 _previewPlayer.SetField("_defaultAudioClip", _menuMusic);
                 _previewPlayer.CrossfadeToDefault();
-                
             }
         }
-
     }
 }
