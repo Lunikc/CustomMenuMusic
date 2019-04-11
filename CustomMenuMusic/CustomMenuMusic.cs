@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Logger = CustomMenuMusic.Misc.Logger;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -35,7 +36,6 @@ namespace CustomMenuMusic
         {
             DontDestroyOnLoad(this);
 
-            //SceneManager.sceneLoaded += sceneLoaded;
             SceneManager.activeSceneChanged += new UnityEngine.Events.UnityAction<Scene, Scene>(this.SceneManager_activeSceneChanged);
 
             if (!Directory.Exists("CustomMenuSongs"))
@@ -60,11 +60,6 @@ namespace CustomMenuMusic
             }
         }
 
-        private void printToLog(string str)  //Prints a string to the log. Quite explicit
-        {
-            Console.WriteLine("[CustomMenuMusic] :" + str);
-        }  
-
         private void GetSongsList() // Initializes the song list
         {
             if (CheckOptions())
@@ -78,7 +73,7 @@ namespace CustomMenuMusic
                 AllSongsfilepaths = GetAllCustomSongs();
             }
 
-            printToLog("Found " + AllSongsfilepaths.Length + " songs.");
+            Logger.Log("Found " + AllSongsfilepaths.Length + " songs.");
 
             ShuffleSongs();
           
@@ -98,7 +93,7 @@ namespace CustomMenuMusic
 
             string[] filePaths = Directory.GetFiles("CustomMenuSongs", "*.ogg");
 
-            printToLog("CustomMenuSongs files found " + filePaths.Length);
+            Logger.Log("CustomMenuSongs files found " + filePaths.Length);
 
             if (filePaths.Length == 0)
             {
@@ -132,7 +127,7 @@ namespace CustomMenuMusic
             }
             catch (System.Exception excpt)
             {
-                Console.WriteLine("[CustomMenuMusic] " + excpt);
+                Logger.Log("[CustomMenuMusic] " + excpt);
             }
 
             return files;
@@ -160,7 +155,7 @@ namespace CustomMenuMusic
         IEnumerator LoadAudioClip()  //Load the song into the preview player
         {
 
-            printToLog("Loading file @ " + musicPath);
+            Logger.Log("Loading file @ " + musicPath);
             WWW data = new WWW(Environment.CurrentDirectory + "\\" + musicPath);
             yield return data;
             try
@@ -172,18 +167,18 @@ namespace CustomMenuMusic
                 }
                 else
                 {
-                    printToLog("No audio found!");
+                    Logger.Log("No audio found!");
                 }
             }
             catch (Exception e)
             {
-                printToLog("Can't load audio! Exception: " + e);
+                Logger.Log("Can't load audio! Exception: " + e);
             }
              
 
             if (_previewPlayer != null && _menuMusic != null)
             {
-                printToLog("Applying custom menu music...");
+                Logger.Log("Applying custom menu music...");
                 _previewPlayer.SetPrivateField("_defaultAudioClip", _menuMusic);
                 _previewPlayer.CrossfadeToDefault();
                 
