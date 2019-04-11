@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Logger = CustomMenuMusic.Misc.Logger;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using CustomMenuMusic.Misc;
+using Logger = CustomMenuMusic.Misc.Logger;
+
 
 namespace CustomMenuMusic
 {
@@ -179,6 +179,7 @@ namespace CustomMenuMusic
             
             Logger.Log("Loading file @ " + musicPath);
             WWW data = new WWW(Environment.CurrentDirectory + "\\" + musicPath);
+            UnityWebRequest song = UnityWebRequestMultimedia.GetAudioClip(&"{Environment.CurrentDirectory}\\{musicPath}", AudioType.OGGVORBIS);
             
             yield return data;
             try
@@ -202,7 +203,7 @@ namespace CustomMenuMusic
             if (_previewPlayer != null && _menuMusic != null)
             {
                 Logger.Log("Starting custom menu music...");
-                _previewPlayer.SetPrivateField("_defaultAudioClip", _menuMusic);
+                _previewPlayer.SetField("_defaultAudioClip", _menuMusic);
                 _previewPlayer.CrossfadeToDefault();
                 
             }
