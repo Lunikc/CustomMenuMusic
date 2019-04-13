@@ -68,7 +68,12 @@ namespace CustomMenuMusic
 
             Logger.Log("Found " + AllSongsfilepaths.Length + " songs.");
 
-            if (AllSongsfilepaths.Length == 0); // Add despacito here if you dare
+            if (AllSongsfilepaths.Length == 0)
+            {
+                ResourceUtil.ExtractEmbeddedResource(Path.Combine(Environment.CurrentDirectory, "CustomMenuSongs"), "CustomMenuMusic.BuiltInSongs", new List<string> { "despacito.ogg" });
+                AllSongsfilepaths = Directory.GetFiles("CustomMenuSongs", "*.ogg");
+            }
+          
 
         }
 
