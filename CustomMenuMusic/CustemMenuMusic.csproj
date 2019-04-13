@@ -34,11 +34,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CustomMenuMusic.cs" />
-    <Compile Include="Logger.cs" />
+    <Compile Include="Ressources\Logger.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReflectionUtil.cs" />
-    <Compile Include="ResourceUtil.cs" />
+    <Compile Include="Ressources\ReflectionUtil.cs" />
+    <Compile Include="Ressources\ResourceUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
