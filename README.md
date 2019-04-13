@@ -1,6 +1,6 @@
 # CustomMenuMusic
 
-## Custom Menu Music v1.1.2
+## Custom Menu Music v1.2.0
 Changes the music in the menu, now you can use either a randomly selected song from all downloaded maps, or use multiple songs selected at random from the `BeatSaber\CustomMenuSongs` folder.
 
 ### Configuration
@@ -14,6 +14,7 @@ All songs files **HAVE** to be `.ogg` format.
 Thanks to **andruzzzhka** for his base code.
 
 #### Changelog :
+- **v1.2.0** : *Works with Beat Saber version `0.13.0p1`*
 - **v1.1.2** : *Now default setting is CustomMenuSongs and reads CustomSongs if empty.*
 - **v1.1.1** : *Fixed issue with map loading.*
 - **v1.1.0** : *Changed the folder from UserData to CustomMenuSongs (Thanks to BeigeAnimal for the suggestion)*
