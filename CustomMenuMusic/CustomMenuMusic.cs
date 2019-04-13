@@ -49,14 +49,8 @@ namespace CustomMenuMusic
 
         public void SceneManager_activeSceneChanged(Scene arg0, Scene arg1) // On menu opened, load the song
         {
-            if (arg1.name == "MenuCore")
-            {
-                if (!_previewPlayer == Resources.FindObjectsOfTypeAll<SongPreviewPlayer>().First())
-                {
-                    _previewPlayer = Resources.FindObjectsOfTypeAll<SongPreviewPlayer>().First();
+            if (arg1.name == "MenuCore")  
                     GetNewSong();
-                }
-            }
         }
 
         private void GetSongsList() // Initializes the song list
@@ -158,6 +152,8 @@ namespace CustomMenuMusic
                 CurrentSong = AllSongsfilepaths.Length - 1;
             else if (CurrentSong > AllSongsfilepaths.Length - 1)
                 CurrentSong = 0;
+
+            CurrentSong = Mathf.Clamp(CurrentSong, 0, (AllSongsfilepaths.Length - 1));  // Shouldn't be used but just in case :)
         }
 
         private void PlayNextSong() // Plays the next song in the list
@@ -176,11 +172,14 @@ namespace CustomMenuMusic
 
         IEnumerator LoadAudioClip()  //Load the song into the preview player
         {
+            yield return new WaitUntil(() => _previewPlayer = Resources.FindObjectsOfTypeAll<SongPreviewPlayer>().First());
+            _previewPlayer.GetField<AudioSource[]>("_audioSources")[_previewPlayer.GetField<int>("_activeChannel")].Stop();
+
             Logger.Log("Loading file @ " + musicPath);
 
             UnityWebRequest song = UnityWebRequestMultimedia.GetAudioClip($"{Environment.CurrentDirectory}\\{musicPath}", AudioType.OGGVORBIS);
 
-            yield return song;
+            yield return song.SendWebRequest();
             try
             {
                 _menuMusic = DownloadHandlerAudioClip.GetContent(song);
@@ -196,13 +195,21 @@ namespace CustomMenuMusic
             {
                 Logger.Log("Can't load audio! Exception: " + e);
             }
-             
+
+            yield return new WaitUntil(() => _menuMusic);
+
 
             if (_previewPlayer != null && _menuMusic != null)
             {
-                Logger.Log("Starting custom menu music...");
-                _previewPlayer.SetField("_defaultAudioClip", _menuMusic);
-                _previewPlayer.CrossfadeToDefault();
+                try
+                {
+                    _previewPlayer.SetField("_defaultAudioClip", _menuMusic);
+                    _previewPlayer.CrossfadeToDefault();
+                }
+                catch (Exception e)
+                {
+                    Logger.Log($"Oops! - {e.StackTrace}");
+                }
             }
         }
     }
