@@ -20,7 +20,7 @@ namespace CustomMenuMusic
         SongPreviewPlayer _previewPlayer = new SongPreviewPlayer();
         int CurrentSong;
         string musicPath;
-        string optionName = "UseCustomMenuSongs";
+        readonly string optionName = "UseCustomMenuSongs";
         string[] AllSongsfilepaths = new string[0];
 
         public static void OnLoad()
@@ -133,7 +133,7 @@ namespace CustomMenuMusic
             StartCoroutine(LoadAudioClip());
         }
 
-        private void ShuffleSongs() // Shuffle the songs list for... uhh... randomized fun?
+        private void ShuffleSongs() // Shuffle the songs list for... uh... randomized fun?
         {
             for (int i = 0; i < AllSongsfilepaths.Length; i++)
             {
