@@ -68,7 +68,6 @@ namespace CustomMenuMusic
 
             Logger.Log("Found " + AllSongsfilepaths.Length + " songs.");
 
-            if (AllSongsfilepaths.Length == 0); // Add despacito here if you dare
 
         }
 
