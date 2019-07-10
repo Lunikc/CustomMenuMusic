@@ -19,3 +19,6 @@ Thanks to **andruzzzhka** for his base code.
 - **v1.1.1** : *Fixed issue with map loading.*
 - **v1.1.0** : *Changed the folder from UserData to CustomMenuSongs (Thanks to BeigeAnimal for the suggestion)*
 - **v1.0.0** : *You can now play multiple menu songs*
+
+
+Now managed by **Steven** at [CustomMenuMusic](https://github.com/DeadlyKitten/CustomMenuMusic)
