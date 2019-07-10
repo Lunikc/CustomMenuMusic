@@ -1,6 +1,9 @@
 # CustomMenuMusic
 
 ## Custom Menu Music v1.2.0
+
+## Now managed by **Steven** at [CustomMenuMusic](https://github.com/DeadlyKitten/CustomMenuMusic)
+
 Changes the music in the menu, now you can use either a randomly selected song from all downloaded maps, or use multiple songs selected at random from the `BeatSaber\CustomMenuSongs` folder.
 
 ### Configuration
@@ -21,4 +24,4 @@ Thanks to **andruzzzhka** for his base code.
 - **v1.0.0** : *You can now play multiple menu songs*
 
 
-Now managed by **Steven** at [CustomMenuMusic](https://github.com/DeadlyKitten/CustomMenuMusic)
+## Now managed by **Steven** at [CustomMenuMusic](https://github.com/DeadlyKitten/CustomMenuMusic)
